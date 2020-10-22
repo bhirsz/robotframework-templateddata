@@ -1,13 +1,15 @@
 import re
+import json
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
 from jinja2 import Environment, BaseLoader
 
 
 class TemplatedData:
-    def __init__(self, default_empty='', jinja_template=False):
+    def __init__(self, default_empty='', jinja_template=False, return_type='text'):
         self.default_empty = default_empty
         self.jinja_template = jinja_template
+        self.return_type = return_type
         self.built_in = BuiltIn()
         self.robot_var_pattern = re.compile(r'\${[^}]+}')
 
@@ -18,6 +20,7 @@ class TemplatedData:
     def get_templated_data(self, template, **kwargs):
         default_empty = kwargs.pop('default_empty', self.default_empty)
         jinja_template = kwargs.pop('jinja_template', self.jinja_template)
+        return_type = kwargs.pop('return_type', self.return_type)
         logger.debug(f'Template:\n{template}')
         robot_vars = self.robot_var_pattern.findall(template)
         overwrite_values = {arg: self.normalize(value) for arg, value in kwargs.items()}
@@ -42,9 +45,16 @@ class TemplatedData:
         else:
             replaced_data = template
         logger.debug(f'Rendered template:\n{replaced_data}')
-        return replaced_data
+        return self.return_data_with_type(replaced_data, return_type)
 
     def get_templated_data_from_path(self, path, **kwargs):
         with open(path) as f:
             template = f.read()
         return self.get_templated_data(template, **kwargs)
+
+    @staticmethod
+    def return_data_with_type(data, data_type):
+        if data_type == 'text':
+            return data
+        if data_type == 'json':
+            return json.loads(data)
