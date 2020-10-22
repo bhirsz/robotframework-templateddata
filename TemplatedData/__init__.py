@@ -21,7 +21,7 @@ class TemplatedData:
             name, *default = var[2:-1].split(':', maxsplit=1)
             default = default[0] if default else default_empty
             raw_name, *attrs = name.split('.', maxsplit=1)
-            #default = self.built_in.get_variable_value(f'${{{raw_name}}}', default)
+            default = self.built_in.get_variable_value(f'${{{raw_name}}}', default)
             default = overwrite_values.get(raw_name, default)
             templated_vars[raw_name] = default
             print(default)
