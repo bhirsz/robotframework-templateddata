@@ -21,7 +21,7 @@ class TemplatedData:
             name, *default = var[2:-1].split(':', maxsplit=1)
             default = default[0] if default else default_empty
             raw_name, *attrs = name.split('.', maxsplit=1)
-            default = self.built_in.get_variable_value(f'${{{raw_name}}}', default)
+            #default = self.built_in.get_variable_value(f'${{{raw_name}}}', default)
             default = overwrite_values.get(raw_name, default)
             templated_vars[raw_name] = default
             print(default)
@@ -33,15 +33,13 @@ class TemplatedData:
                 var_replaced = str(default)
             template = template.replace(var, var_replaced)
         print(template)
-        r_template = Environment(loader=BaseLoader()).from_string(template)
-        return r_template.render(templated_vars=templated_vars)
+        if jinja_template:
+            r_template = Environment(loader=BaseLoader()).from_string(template)
+            return r_template.render(templated_vars=templated_vars)
+        else:
+            return template
 
     def get_templated_data_from_path(self, path, default_empty='', jinja_template=False, **kwargs):
         with open(path) as f:
             template = f.read()
         return self.get_templated_data(template, default_empty, jinja_template, **kwargs)
-
-
-if __name__ == "__main__":
-    templated_data = TemplatedData()
-    templated_data.get_templated_data_from_path(r'..\templated_data_jinja.json', jinja_template=True)
