@@ -5,7 +5,9 @@ from jinja2 import Environment, BaseLoader
 
 
 class TemplatedData:
-    def __init__(self):
+    def __init__(self, default_empty='', jinja_template=False):
+        self.default_empty = default_empty
+        self.jinja_template = jinja_template
         self.built_in = BuiltIn()
         self.robot_var_pattern = re.compile(r'\${[^}]+}')
 
@@ -13,13 +15,14 @@ class TemplatedData:
     def normalize(value):
         return value.lower()
 
-    def get_templated_data(self, template, default_empty='', jinja_template=False, **kwargs):
-        logger.debug('Template:')
-        logger.debug(template)
-        vars = self.robot_var_pattern.findall(template)
+    def get_templated_data(self, template, **kwargs):
+        default_empty = kwargs.pop('default_empty', self.default_empty)
+        jinja_template = kwargs.pop('jinja_template', self.jinja_template)
+        logger.debug(f'Template:\n{template}')
+        robot_vars = self.robot_var_pattern.findall(template)
         overwrite_values = {arg: self.normalize(value) for arg, value in kwargs.items()}
         templated_vars = {}
-        for var in vars:
+        for var in robot_vars:
             name, *default = var[2:-1].split(':', maxsplit=1)
             default = default[0] if default else default_empty
             raw_name, *attrs = name.split('.', maxsplit=1)
@@ -38,11 +41,10 @@ class TemplatedData:
             replaced_data = r_template.render(templated_vars=templated_vars)
         else:
             replaced_data = template
-        logger.debug('Rendered template:')
-        logger.debug(replaced_data)
+        logger.debug(f'Rendered template:\n{replaced_data}')
         return replaced_data
 
-    def get_templated_data_from_path(self, path, default_empty='', jinja_template=False, **kwargs):
+    def get_templated_data_from_path(self, path, **kwargs):
         with open(path) as f:
             template = f.read()
-        return self.get_templated_data(template, default_empty, jinja_template, **kwargs)
+        return self.get_templated_data(template, **kwargs)
