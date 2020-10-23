@@ -43,12 +43,12 @@ Test data::
 Robot code::
 
     ${var}     Set Variable    ${10}
-    ${data}    Get Templated Data From Path    test.data.txt
+    ${data}    Get Templated Data From Path    test_data.txt
     Log    ${data} # it should print `my variable is 10`
 
 If the variable is not found it will be replaced with empty string. You can override that behaviour::
 
-    ${data}    Get Templated Data From Path    test.data.txt    default_empty=${5}
+    ${data}    Get Templated Data From Path    test_data.txt    default_empty=${5}
     Log    ${data} # it should print `my variable is 5`
 
 You can also set default value of variable with `:` symbol.
@@ -60,9 +60,19 @@ Test data::
 Robot code::
 
     ${var}     Set Variable    ${10}
-    ${data}    Get Templated Data From Path    test.data.txt
+    ${data}    Get Templated Data From Path    test_data.txt
     Log    ${data} # it should print `my variable is 10 and some string`
 
+Return value can be either text/string (default) or json.
+
+Test data::
+
+    { "key": "${var}" }
+
+Robot code::
+    ${data}    Get Templated Data From Path    test_data.txt    var=value    return_type=json
+    Log    ${data} # it should print `{ "key": "value" }` and ${data} will be of type json
+   
 .. Badges links
 
 .. |License|
