@@ -23,6 +23,11 @@ Get templated data with one local var in scope
     ${data}    Get Templated Data From Path    ${TEMPLATE_PATH}
     Log    ${data}
 
+Get templated data with var from kwargs
+    ${account_id2}    Set Variable    ${10}
+    ${data}    Get Templated Data From Path    ${TEMPLATE_PATH}    account_id2=Value from kwarg
+    Log    ${data}
+
 Get templated data with all var in scope
     ${account_id2}    Set Variable    ${10}
     ${account_id}     Set Variable    ${10}
