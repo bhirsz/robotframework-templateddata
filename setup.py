@@ -22,7 +22,7 @@ setup(
     description='Robot Framework library for generating test data from templates',
     long_description=README,
     long_description_content_type="text/x-rst",
-    url="https://github.com/bhisz/robotframework-templateddata",
+    url="https://github.com/bhirsz/robotframework-templateddata",
     author="Bartlomiej Hirsz",
     author_email="bartek.hirsz@gmail.com",
     license="Apache License 2.0",
