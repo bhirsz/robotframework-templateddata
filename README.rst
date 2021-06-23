@@ -70,6 +70,7 @@ Test data::
     { "key": "${var}" }
 
 Robot code::
+
     ${data}    Get Templated Data From Path    test_data.txt    var=value    return_type=json
     Log    ${data} # it should print `{ "key": "value" }` and ${data} will be of type json
    
