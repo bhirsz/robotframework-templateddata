@@ -17,6 +17,7 @@ Nothing set
     nested_variable3
     nested_variable4
     nested_variable5
+    empty_default
 
 Default set
     [Template]    Default set
@@ -33,6 +34,7 @@ Default and variable set
     nested_variable3
     nested_variable4
     nested_variable5
+    empty_default
 
 
 *** Keywords ***
