@@ -1,0 +1,9 @@
+{
+    'accounts': [
+        { 'id': 10 },
+        { 'id': 10 }
+        ],
+    'users': [
+        {'bartek': '5', 'tymoteusz': '10', 'pawel': '-1'}
+    ]
+}

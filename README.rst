@@ -9,19 +9,16 @@ TemplatedData
 
 Introduction
 ------------
-TemplatedData is Robot Framework library for dynamically generated test data using on robot variables and Jinja templating.
-Check tests/test.robot in repository to see and run usage examples.
+TemplatedData is Robot Framework library for dynamically generated test data using robot variables and Jinja templating.
 
 Requirements
 ------------
-
 Python 3.6+ and Robot Framework 3.2.1+.
 
 TemplatedData will most likely work on other versions but it's not tested on them.
 
 Installation
 ------------
-
 You can install TemplateData by running::
 
     pip install robotframework-templateddata

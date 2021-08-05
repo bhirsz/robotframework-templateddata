@@ -24,20 +24,8 @@ class TemplatedData:
         logger.debug(f'Template:\n{template}')
         overwrite_values = {self.normalize(arg): value for arg, value in kwargs.items()}
         templated_vars = {}
-        for var in self.robot_var_pattern.findall(template):
-            name, *default = var[2:-1].split(':', maxsplit=1)
-            default = default[0] if default else default_empty
-            raw_name, *attrs = name.split('.', maxsplit=1)
-            default = self.built_in.get_variable_value(f'${{{raw_name}}}', default)
-            default = overwrite_values.get(raw_name, default)
-            templated_vars[raw_name] = default
-            if jinja_template:
-                var_replaced = f'templated_vars["{raw_name}"]'
-                if attrs:
-                    var_replaced += '.' + attrs[0]
-            else:
-                var_replaced = str(default)
-            template = template.replace(var, var_replaced)
+        elements = _search_variables(template, default_empty)
+        template = resolve(elements, overwrite_values, jinja_template, templated_vars)
         if jinja_template:
             r_template = Environment(loader=BaseLoader()).from_string(template)
             replaced_data = r_template.render(templated_vars=templated_vars)
@@ -56,3 +44,82 @@ class TemplatedData:
         if data_type == 'json':
             return json.loads(data)
         return data
+
+
+class Variable:
+    def __init__(self, string, default_empty):
+        elements = _search_variables(string, default_empty)
+
+        for index, elem in enumerate(elements):
+            if isinstance(elem, str):
+                if ':' in elem:
+                    pre, suf = elem.split(':', maxsplit=1)
+                    self.value = elements[:index]
+                    self.default = elements[index+1:]
+                    if pre:
+                        self.value.append(pre)
+                    if suf:
+                        self.default.insert(0, suf)
+                    break
+        else:
+            self.value = elements
+            self.default = default_empty
+
+    def resolve(self, overwrite_values, jinja_template, templated_vars):
+        value = resolve(self.value, overwrite_values, jinja_template, templated_vars)
+        raw_name, *attrs = value.split('.', maxsplit=1)
+        if raw_name in overwrite_values:
+            default = overwrite_values[raw_name]
+        else:
+            default = BuiltIn().get_variable_value(f'${{{raw_name}}}', resolve(self.default, overwrite_values, jinja_template, templated_vars))
+
+        templated_vars[raw_name] = default
+        if jinja_template:
+            var_replaced = f'templated_vars["{raw_name}"]'
+            if attrs:
+                var_replaced += '.' + attrs[0]
+        else:
+            var_replaced = str(default)
+        return var_replaced
+
+
+def resolve(elements, overwrite_values, jinja_template, templated_vars):
+    new_elements = []
+    for elem in elements:
+        if isinstance(elem, Variable):
+            elem = elem.resolve(overwrite_values, jinja_template, templated_vars)
+        new_elements.append(elem)
+    return ''.join(new_elements)
+
+
+def _search_variables(string, default_empty):
+    """ return list in form of [string, Variable, string, Variable.. ] .
+        Following string: "my value is ${value}." will return: ["my value is", Variable("${value}"), .]
+    """
+    elements = []
+    if not string:
+        return elements
+    while True:
+        var_start = string.find('${')
+        if var_start < 0:
+            if string:
+                elements.append(string)
+            break
+        if var_start:
+            elements.append(string[:var_start])
+        string = string[var_start+2:]
+        bracket = 1
+        for index, char in enumerate(string):
+            if char == '{':
+                bracket += 1
+            elif char == '}':
+                bracket -= 1
+            if not bracket:
+                elements.append(Variable(string[:index], default_empty))
+                string = string[index+1:]
+                break
+        else:
+            if string:
+                elements.append(string)
+            break
+    return elements

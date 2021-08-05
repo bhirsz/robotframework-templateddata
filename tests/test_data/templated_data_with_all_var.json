@@ -1,0 +1,20 @@
+{
+    "accounts": [
+        { "id": 10 },
+        { "id2": "10" }
+        ],
+    "users": [
+      {
+        "name": "bartek",
+        "amount": 5
+      },
+      {
+        "name": "tymoteusz",
+        "amount": 10
+      },
+      {
+        "name": "pawel",
+        "amount": -1
+      }
+    ]
+}
