@@ -10,8 +10,6 @@ class TemplatedData:
         self.default_empty = default_empty
         self.jinja_template = jinja_template
         self.return_type = return_type
-        self.built_in = BuiltIn()
-        self.robot_var_pattern = re.compile(r'\${[^}]+}')
 
     @staticmethod
     def normalize(value):
