@@ -1,0 +1,14 @@
+{
+    "accounts": [
+        { "id": {{ ${account_id:5} }} },
+        { "id2": "{{ ${account_id2} }}" }
+        ],
+    "users": [
+{%- for user, amount in ${users.items()} %}
+      {
+        "name": "{{ user }}",
+        "amount": {{ amount }}
+      }{{ "," if not loop.last }}
+{%- endfor %}
+    ]
+}

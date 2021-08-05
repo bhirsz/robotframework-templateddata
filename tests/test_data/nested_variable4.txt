@@ -1,0 +1,1 @@
+some value ${${VARNAME2:${VARNAME}}}  ${${VARNAME}}  ${${VARNAME2:VARNAME}}

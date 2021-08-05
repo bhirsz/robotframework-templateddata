@@ -159,3 +159,8 @@ dmypy.json
 
 # profiling data
 .prof
+
+# Robot Framework
+log.html
+output.xml
+report.html
