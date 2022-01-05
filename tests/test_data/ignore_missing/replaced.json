@@ -4,14 +4,14 @@
       "id": "VALUE"
     },
     {
-      "id2": "${NOT_ROBOT_VARIABLE}"
+      "id2": ""
     },
     {
-      "id3": "${NOT_ROBOT_VARIABLE:5}"
+      "id3": "5"
     },
     {
       "foo": "VALUE",
-      "bar": "${json-unit.any-string}"
+      "bar": ""
     },
     {
       "test": "@{LIST_BUT_NOT_ROBOT_VARIABLE}"

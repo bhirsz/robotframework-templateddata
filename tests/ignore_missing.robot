@@ -20,7 +20,7 @@ Get templated data and ignore not existing
 Get templated data and do not ignore not existing
     ${robot_variable}    Set Variable    VALUE
     ${template}    Get File    ${TEMPLATE_PATH}
-    ${data}    Get Templated Data    ${template}    ignore_missing=False
+    ${data}    Get Templated Data    ${template}    ignore_missing=${False}
     Template Should Render Correctly    ${data}    ${SOURCE_DIR}ignore_missing${/}replaced.json
     Log    ${data}
 
