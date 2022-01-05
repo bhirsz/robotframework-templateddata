@@ -1,0 +1,6 @@
+{
+    "accounts": [
+        { "id": "VALUE" },
+        { "id2": "${NOT_ROBOT_VARIABLE}" }
+        ]
+}
