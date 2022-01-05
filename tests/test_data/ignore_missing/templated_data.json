@@ -1,0 +1,20 @@
+{
+  "accounts": [
+    {
+      "id": "${ROBOT_VARIABLE:5}"
+    },
+    {
+      "id2": "${NOT_ROBOT_VARIABLE}"
+    },
+    {
+      "id3": "${NOT_ROBOT_VARIABLE:5}"
+    },
+    {
+      "foo": "${ROBOT_VARIABLE}",
+      "bar": "${json-unit.any-string}"
+    },
+    {
+      "test": "@{LIST_BUT_NOT_ROBOT_VARIABLE}"
+    }
+  ]
+}
