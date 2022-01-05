@@ -1,0 +1,20 @@
+{
+  "accounts": [
+    {
+      "id": "VALUE"
+    },
+    {
+      "id2": ""
+    },
+    {
+      "id3": "5"
+    },
+    {
+      "foo": "VALUE",
+      "bar": ""
+    },
+    {
+      "test": "@{LIST_BUT_NOT_ROBOT_VARIABLE}"
+    }
+  ]
+}

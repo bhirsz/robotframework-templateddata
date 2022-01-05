@@ -17,9 +17,9 @@ Topic :: Utilities
 """.strip().splitlines()
 
 setup(
-    name='robotframework-templateddata',
+    name="robotframework-templateddata",
     version=__version__,
-    description='Robot Framework library for generating test data from templates',
+    description="Robot Framework library for generating test data from templates",
     long_description=README,
     long_description_content_type="text/x-rst",
     url="https://github.com/bhirsz/robotframework-templateddata",
@@ -28,7 +28,7 @@ setup(
     license="Apache License 2.0",
     platforms="any",
     classifiers=CLASSIFIERS,
-    packages=['TemplatedData'],
+    packages=["TemplatedData"],
     include_package_data=True,
-    install_requires=['robotframework>=3.2.1', 'jinja2']
+    install_requires=["robotframework>=3.2.1", "jinja2"],
 )

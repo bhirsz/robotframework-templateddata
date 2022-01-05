@@ -1,0 +1,6 @@
+{
+    "accounts": [
+        { "id": "{{ ${ROBOT_VARIABLE:5} }}" },
+        { "id2": "{{ ${NOT_ROBOT_VARIABLE} }}" }
+        ]
+}
