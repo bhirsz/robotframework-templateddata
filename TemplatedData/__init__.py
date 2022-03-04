@@ -41,8 +41,8 @@ class TemplatedData:
         logger.debug(f"Rendered template:\n{replaced_data}")
         return self.return_data_with_type(replaced_data, return_type)
 
-    def get_templated_data_from_path(self, path, **kwargs):
-        with open(path) as f:
+    def get_templated_data_from_path(self, path, encoding="utf-8", **kwargs):
+        with open(path, encoding=encoding) as f:
             template = f.read()
         return self.get_templated_data(template, **kwargs)
 
