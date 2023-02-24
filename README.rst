@@ -43,6 +43,9 @@ Robot code::
     ${data}    Get Templated Data From Path    test_data.txt
     Log    ${data} # it should print `my variable is 10`
 
+Default values
+~~~~~~~~~~~~~~~~~~
+
 If the variable is not found it will be replaced with empty string. You can override that behaviour::
 
     ${data}    Get Templated Data From Path    test_data.txt    default_empty=${5}
@@ -60,6 +63,9 @@ Robot code::
     ${data}    Get Templated Data From Path    test_data.txt
     Log    ${data} # it should print `my variable is 10 and some string`
 
+Return value type
+~~~~~~~~~~~~~~~~~~
+
 Return value can be either text/string (default) or json.
 
 Test data::
@@ -71,6 +77,64 @@ Robot code::
     ${data}    Get Templated Data From Path    test_data.txt    var=value    return_type=json
     Log    ${data} # it should print `{ "key": "value" }` and ${data} will be of type json
    
+Jinja templating
+~~~~~~~~~~~~~~~~~~
+
+TemplatedData can also render the Jinja templates using Robot Framework variables. To enable Jinja template pass ``jinja_template`` as argument to 
+library import or method call::
+
+    *** Settings ***
+   Library    TemplatedData  jinja_template=${True}
+   
+   OR
+   
+   *** Keywords ***
+   Load Data
+       ${data}    Get Templated Data From Path    data.template    jinja_template=${True}
+
+Test data (Jinja template)::
+
+   {
+       "accounts": [
+           { "id": {{ ${account_id:5} }} },
+           { "id2": "{{ ${account_id2} }}" }
+           ],
+       "users": [
+   {%- for user, amount in ${users.items()} %}
+         {
+           "name": "{{ user }}",
+           "amount": {{ amount }}
+         }{{ "," if not loop.last }}
+   {%- endfor %}
+       ]
+   }
+   
+ Robot code::
+    ${data}    Get Templated Data From Path    data.template    jinja_template=${True}
+    
+ Example data output::
+ 
+    {
+       "accounts": [
+           { "id": 10 },
+           { "id2": "10" }
+           ],
+       "users": [
+         {
+           "name": "bartek",
+           "amount": 5
+         },
+         {
+           "name": "tymoteusz",
+           "amount": 10
+         },
+         {
+           "name": "pawel",
+           "amount": -1
+         }
+       ]
+   }
+
 .. Badges links
 
 .. |License|
