@@ -108,11 +108,12 @@ Test data (Jinja template)::
    {%- endfor %}
        ]
    }
-   
- Robot code::
+
+Robot code::
+ 
     ${data}    Get Templated Data From Path    data.template    jinja_template=${True}
     
- Example data output::
+Example data output::
  
     {
        "accounts": [
