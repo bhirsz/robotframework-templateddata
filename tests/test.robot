@@ -59,3 +59,19 @@ Get templated data from variable
     ${data}    Get Templated Data    ${template}
     Template Should Render Correctly    ${data}    ${SOURCE_DIR}templated_data_with_all_var.json
     Log    ${data}
+
+Get templated HTML data without autoescaping
+    ${normal_string}    Set Variable    Hello World!
+    ${unsafe_string}    Set Variable    <script>alert(1)</script>
+    ${template}    Get File    ${SOURCE_DIR}templated_data_jinja_autoescape_override.html
+    ${html}    Get Templated Data    ${template}
+    Template Should Render Correctly    ${html}    ${SOURCE_DIR}templated_data_jinja_autoescape_override_result.html
+    Log    ${html}
+
+Get templated HTML data with autoescaping
+    ${normal_string}    Set Variable    Hello World!
+    ${unsafe_string}    Set Variable    <script>alert(1)</script>
+    ${template}    Get File    ${SOURCE_DIR}templated_data_jinja_autoescape.html
+    ${html}    Get Templated Data    ${template}    auto_escaping=True
+    Template Should Render Correctly    ${html}    ${SOURCE_DIR}templated_data_jinja_autoescape_result.html
+    Log    ${html}
