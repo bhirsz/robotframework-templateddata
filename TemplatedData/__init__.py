@@ -1,6 +1,6 @@
 import json
 
-from jinja2 import Environment, BaseLoader
+from jinja2 import Environment, BaseLoader, select_autoescape
 from robot.api import logger
 from robot.errors import VariableError
 from robot.libraries.BuiltIn import BuiltIn
@@ -34,7 +34,7 @@ class TemplatedData:
         elements = _search_variables(template, default_empty, ignore_missing)
         template = resolve(elements, overwrite_values, jinja_template, templated_vars)
         if jinja_template:
-            r_template = Environment(loader=BaseLoader()).from_string(template)
+            r_template = Environment(loader=BaseLoader(), autoescape=select_autoescape(['html', 'htm', 'xml'])).from_string(template)
             replaced_data = r_template.render(templated_vars=templated_vars)
         else:
             replaced_data = template
